@@ -1,0 +1,111 @@
+@import 'tailwindcss';
+
+@theme {
+  /* ── Backgrounds: clean white / off-white, deep Sotheby navy for dark ── */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #fafafa;
+  --color-bg-tertiary: #f5f5f5;
+  --color-bg-dark: #002349;
+  --color-bg-dark-2: #001731;
+
+  /* ── Accent: the iconic Sotheby's navy ── */
+  --color-accent: #002349;
+  --color-accent-hover: #001731;
+  --color-accent-soft: #9fb3cc;
+  --color-accent-light: rgba(0, 35, 73, 0.06);
+  --color-accent-border: rgba(0, 35, 73, 0.22);
+
+  /* ── Error / form-validation red ── */
+  --color-clay: #c0392b;
+
+  /* ── Text ── */
+  --color-text-primary: #1d1d1b;
+  --color-text-secondary: #555555;
+  --color-text-muted: #7a7a7a;
+  --color-text-on-dark: #ffffff;
+  --color-text-on-dark-muted: #9fb3cc;
+
+  /* ── Borders ── */
+  --color-border: #e5e5e5;
+  --color-border-light: #f1f1f1;
+  --color-border-dark: rgba(255, 255, 255, 0.16);
+
+  /* ── Fonts (wired from next/font in layout.tsx) ── */
+  --font-sans: var(--font-libre-franklin), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, 'Times New Roman', serif;
+
+  /* ── Animation ── */
+  --animate-fade-in: fade-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-slide-up: slide-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ken-burns {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Thin accent divider used under section labels */
+.accent-divider {
+  width: 48px;
+  height: 1px;
+  background: var(--color-accent);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Scroll-reveal helper (paired with useIntersection) */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ken-burns {
+  animation: ken-burns 12s ease-out forwards;
+}
+
+/* Honeypot field — visually hidden but present for bots */
+.honeypot-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg-primary);
+}
