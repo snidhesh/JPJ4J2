@@ -41,15 +41,18 @@ export default function JsonLd() {
     url: SITE_URL,
   };
 
+  // Escape "<" so a value can never close the <script> tag or inject markup.
+  const toJsonLd = (obj: unknown) => JSON.stringify(obj).replace(/</g, '\\u003c');
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(residence) }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(residence) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(agent) }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(agent) }}
       />
     </>
   );

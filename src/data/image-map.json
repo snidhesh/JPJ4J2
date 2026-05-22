@@ -1,7 +1,7 @@
 {
-  "_README": "Map the villa photos to each section. Put source filenames from the /Images folder WITHOUT extension (e.g. \"A-12\") into each `sources` array, in display order. Then run `npm run process-images` to generate optimised WebP files in /public/images. The galleries read from this same file, so this is the only place you set the photo lineup.",
+  "_README": "Map the villa photos to each section. Put source filenames from the source folder WITHOUT extension into each `sources` array, in display order. Then run `npm run process-images` to generate optimised WebP files in /public/images. The galleries read from this same file, so this is the only place you set the photo lineup.",
   "hero": {
-    "source": "",
+    "source": "Hero Banner",
     "alt": "Villa Sfiora — a fully reconstructed villa in Jumeirah Park, Dubai"
   },
   "divider": {
@@ -11,31 +11,31 @@
   "living": {
     "name": "Living & Reception",
     "alt": "Formal and informal living spaces at Villa Sfiora",
-    "sources": []
+    "sources": ["Living-1", "Living-2", "Living-3", "Living-4"]
   },
   "kitchen": {
     "name": "The Kitchen",
     "alt": "Show kitchen with Miele and Siemens appliances at Villa Sfiora",
-    "sources": []
+    "sources": ["Kitchen-1", "Kitchen-2", "Kitchen-3", "Kitchen-4"]
   },
   "dining": {
     "name": "Dining",
     "alt": "Dedicated dining area at Villa Sfiora",
-    "sources": []
+    "sources": ["Dining-1", "Dining-2", "Dining-3", "Dining-4"]
   },
   "bedrooms": {
     "name": "Bedrooms & Study",
     "alt": "Ensuite bedrooms and study at Villa Sfiora",
-    "sources": []
+    "sources": ["Bedroom-1", "Bedroom-2", "Bedroom-3", "Bedroom-4"]
   },
   "master": {
     "name": "Master Suite",
     "alt": "Master suite with walk-in closet at Villa Sfiora",
-    "sources": []
+    "sources": ["Master Suite-1", "Master Suite-2", "Master Suite-3", "Master Suite-4"]
   },
   "outdoor": {
     "name": "Outdoor & Private Resort",
     "alt": "Temperature-controlled pool, jacuzzi and entertainment area at Villa Sfiora",
-    "sources": []
+    "sources": ["Outdoor-1", "Outdoor-2", "Outdoor-3", "Outdoor-4"]
   }
 }

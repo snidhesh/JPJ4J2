@@ -7,10 +7,10 @@ import sharp from 'sharp';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SOURCE_DIR = join(ROOT, 'Images');
+const SOURCE_DIR = join(ROOT, 'Website Pics');
 const OUTPUT_DIR = join(ROOT, 'public', 'images');
-const MAX_WIDTH = 2400;
-const QUALITY = 80;
+const MAX_WIDTH = 2000;
+const QUALITY = 82;
 
 const map = JSON.parse(await readFile(join(ROOT, 'src', 'data', 'image-map.json'), 'utf8'));
 

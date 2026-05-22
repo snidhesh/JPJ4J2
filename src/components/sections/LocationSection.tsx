@@ -47,7 +47,7 @@ export function LocationSection() {
               <iframe
                 title="Jumeirah Park map"
                 src={`https://maps.google.com/maps?q=${LOCATION_MAP_QUERY}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
-                className="h-full w-full grayscale-[0.2]"
+                className="h-full w-full [filter:grayscale(1)_invert(0.92)_sepia(1)_hue-rotate(176deg)_saturate(2.4)_brightness(0.92)_contrast(0.95)]"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />

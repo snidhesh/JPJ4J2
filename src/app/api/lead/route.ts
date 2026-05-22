@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { leadSchema } from '@/lib/validation';
+import { leadSchema, sanitizeUtm } from '@/lib/validation';
 import { PROJECT_NAME, LOCATION_NAME } from '@/lib/constants';
 
 export const runtime = 'nodejs';
@@ -39,13 +39,14 @@ export async function POST(request: Request) {
     message: lead.message ?? '',
     consent: lead.consent,
     source: lead.source,
-    utm: lead.utm ?? {},
+    utm: sanitizeUtm(lead.utm),
     submittedAt: new Date().toISOString(),
   };
 
-  // No endpoint configured yet — accept and log so the form is testable pre-integration.
+  // No endpoint configured yet — accept so the form is testable pre-integration.
+  // NB: never log the payload — it contains PII (name/email/phone).
   if (!endpoint) {
-    console.warn('[lead] CRM_LEAD_ENDPOINT not set. Lead received but not forwarded:', payload);
+    console.warn('[lead] CRM_LEAD_ENDPOINT not set; lead accepted but not forwarded.');
     return NextResponse.json({ ok: true, forwarded: false });
   }
 
@@ -63,7 +64,8 @@ export async function POST(request: Request) {
     });
 
     if (!res.ok) {
-      console.error('[lead] CRM responded with', res.status, await res.text().catch(() => ''));
+      // Log status only — not the response body, which may echo PII.
+      console.error('[lead] CRM rejected submission with status', res.status);
       return NextResponse.json(
         { ok: false, error: 'We could not submit your enquiry. Please try again or contact us directly.' },
         { status: 502 },
@@ -72,7 +74,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true, forwarded: true });
   } catch (err) {
-    console.error('[lead] Failed to forward to CRM:', err);
+    // Log the error type/message only — never the lead data.
+    console.error('[lead] Failed to forward to CRM:', err instanceof Error ? err.message : 'unknown error');
     return NextResponse.json(
       { ok: false, error: 'We could not submit your enquiry. Please try again or contact us directly.' },
       { status: 502 },

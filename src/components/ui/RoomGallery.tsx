@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight, ImageOff } from 'lucide-react';
 import type { GalleryImage } from '@/types';
@@ -17,13 +18,40 @@ export function RoomGallery({
 }) {
   const [active, setActive] = useState<number | null>(null);
 
+  const close = useCallback(() => setActive(null), []);
+  const prev = useCallback(
+    () => setActive((i) => (i === null ? null : (i - 1 + images.length) % images.length)),
+    [images.length],
+  );
+  const next = useCallback(
+    () => setActive((i) => (i === null ? null : (i + 1) % images.length)),
+    [images.length],
+  );
+
+  // Keyboard controls + body scroll lock while the lightbox is open.
+  useEffect(() => {
+    if (active === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') prev();
+      else if (e.key === 'ArrowRight') next();
+    };
+    document.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [active, close, prev, next]);
+
   if (!images.length) {
     return (
-      <div className={cn('grid grid-cols-2 gap-3 md:grid-cols-4', className)}>
+      <div className={cn('grid grid-cols-1 gap-4 sm:grid-cols-2', className)}>
         {Array.from({ length: placeholderCount }).map((_, i) => (
           <div
             key={i}
-            className="flex aspect-[4/3] flex-col items-center justify-center gap-2 border border-dashed border-border bg-bg-secondary text-text-muted"
+            className="flex aspect-[3/2] flex-col items-center justify-center gap-2 border border-dashed border-border bg-bg-secondary text-text-muted"
           >
             <ImageOff size={20} strokeWidth={1} />
             <span className="text-[0.6rem] tracking-[0.2em] uppercase">Photo to come</span>
@@ -33,55 +61,52 @@ export function RoomGallery({
     );
   }
 
-  const close = () => setActive(null);
-  const prev = () => setActive((i) => (i === null ? null : (i - 1 + images.length) % images.length));
-  const next = () => setActive((i) => (i === null ? null : (i + 1) % images.length));
-
   return (
     <>
-      <div className={cn('grid grid-cols-2 gap-3 md:grid-cols-3', className)}>
+      <div className={cn('grid grid-cols-1 gap-4 sm:grid-cols-2', className)}>
         {images.map((img, i) => (
           <button
             key={img.src}
             onClick={() => setActive(i)}
-            className={cn(
-              'group relative aspect-[4/3] cursor-pointer overflow-hidden bg-bg-secondary',
-              // First image spans wider on larger grids for rhythm
-              i === 0 && images.length > 4 && 'md:col-span-2 md:row-span-2 md:aspect-auto',
-            )}
+            className="group relative aspect-[3/2] cursor-pointer overflow-hidden bg-bg-secondary"
           >
             <Image
               src={img.src}
               alt={img.alt}
               fill
-              sizes="(max-width: 768px) 50vw, 33vw"
+              sizes="(max-width: 640px) 100vw, 50vw"
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
           </button>
         ))}
       </div>
 
-      {active !== null && (
-        <div
-          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/92 p-4"
-          onClick={close}
-        >
-          <button
+      {active !== null &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/92 p-4"
             onClick={close}
-            aria-label="Close"
-            className="absolute top-5 right-5 text-white/70 transition hover:text-white"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Image viewer"
           >
-            <X size={28} strokeWidth={1.2} />
+          <button
+            onClick={(e) => { e.stopPropagation(); close(); }}
+            aria-label="Close"
+            className="fixed top-4 right-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-black/50 text-white ring-1 ring-white/30 backdrop-blur-sm transition hover:bg-white hover:text-black sm:top-6 sm:right-6"
+          >
+            <X size={22} strokeWidth={1.5} />
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); prev(); }}
             aria-label="Previous"
-            className="absolute left-4 text-white/70 transition hover:text-white md:left-8"
+            className="absolute left-3 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-black/40 text-white ring-1 ring-white/20 backdrop-blur-sm transition hover:bg-white hover:text-black md:left-8"
           >
-            <ChevronLeft size={40} strokeWidth={1} />
+            <ChevronLeft size={26} strokeWidth={1.5} />
           </button>
           <div
-            className="relative h-[80vh] w-[90vw] max-w-5xl"
+            className="relative h-[78vh] w-[88vw] max-w-5xl"
             onClick={(e) => e.stopPropagation()}
           >
             <Image
@@ -95,12 +120,13 @@ export function RoomGallery({
           <button
             onClick={(e) => { e.stopPropagation(); next(); }}
             aria-label="Next"
-            className="absolute right-4 text-white/70 transition hover:text-white md:right-8"
+            className="absolute right-3 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-black/40 text-white ring-1 ring-white/20 backdrop-blur-sm transition hover:bg-white hover:text-black md:right-8"
           >
-            <ChevronRight size={40} strokeWidth={1} />
+            <ChevronRight size={26} strokeWidth={1.5} />
           </button>
-        </div>
-      )}
+        </div>,
+          document.body,
+        )}
     </>
   );
 }

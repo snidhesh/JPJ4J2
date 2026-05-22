@@ -32,6 +32,7 @@ next-env.d.ts
 
 # source/raw assets (kept out of the deployed bundle)
 /Images/
+/Website Pics/
 Logo.png
 DLD Permit QR.jpeg
 jumeirah park-villa-landing.html
