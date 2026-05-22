@@ -1,18 +1,12 @@
-import * as Icons from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 import { Reveal } from '@/components/ui/Reveal';
 import { RoomGallery } from '@/components/ui/RoomGallery';
+import { OutdoorFeatures } from '@/components/sections/OutdoorFeatures';
 import { OUTDOOR_IMAGES } from '@/lib/images';
-import { OUTDOOR_FEATURES } from '@/lib/constants';
-
-function Icon({ name, ...props }: { name: string } & Icons.LucideProps) {
-  const Cmp = (Icons as unknown as Record<string, React.ComponentType<Icons.LucideProps>>)[name];
-  return Cmp ? <Cmp {...props} /> : null;
-}
 
 export function OutdoorSection() {
   return (
-    <section id="outdoor" className="bg-bg-primary py-24 sm:py-32">
+    <section id="outdoor" className="bg-bg-primary py-16 sm:py-32">
       <Container>
         <div className="mb-12 grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-end lg:gap-16">
           <Reveal>
@@ -38,20 +32,8 @@ export function OutdoorSection() {
           <RoomGallery images={OUTDOOR_IMAGES.images} placeholderCount={4} />
         </Reveal>
 
-        {/* Outdoor feature grid */}
-        <div className="mt-12 grid grid-cols-2 border-t border-l border-border md:grid-cols-4">
-          {OUTDOOR_FEATURES.map((f, i) => (
-            <Reveal
-              key={f.title}
-              delay={i * 50}
-              className="border-r border-b border-border bg-bg-secondary px-5 py-7"
-            >
-              <Icon name={f.icon ?? 'Dot'} size={22} strokeWidth={1.2} className="text-accent" />
-              <p className="mt-4 font-serif text-lg leading-snug text-text-primary">{f.title}</p>
-              <p className="mt-2 text-xs leading-relaxed text-text-muted">{f.description}</p>
-            </Reveal>
-          ))}
-        </div>
+        {/* Outdoor feature grid — collapses to 4 on mobile with a show-more toggle */}
+        <OutdoorFeatures />
       </Container>
     </section>
   );

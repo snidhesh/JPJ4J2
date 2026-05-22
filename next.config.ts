@@ -2,11 +2,15 @@ import type { NextConfig } from 'next';
 
 // Content-Security-Policy. Kept pragmatic for a static marketing site:
 // - 'unsafe-inline' is required for Next's hydration bootstrap and styled-jsx/Tailwind.
+// - 'unsafe-eval' is added ONLY in development — React dev mode and the dev
+//   bundler use eval() for fast refresh / source maps; production never does.
 // - frame-src allows the YouTube tour embed and the Google Maps embed.
 // - img-src allows next/image output, data URIs, and YouTube thumbnails.
+const isDev = process.env.NODE_ENV !== 'production';
+
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
   "style-src 'self' 'unsafe-inline'",
   // cdnjs hosts the Twemoji country flags used by react-international-phone.
   "img-src 'self' data: blob: https://img.youtube.com https://i.ytimg.com https://cdnjs.cloudflare.com",

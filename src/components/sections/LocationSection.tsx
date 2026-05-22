@@ -10,7 +10,7 @@ import {
 
 export function LocationSection() {
   return (
-    <section id="location" className="bg-bg-primary py-24 sm:py-32">
+    <section id="location" className="bg-bg-primary py-16 sm:py-32">
       <Container>
         <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
           <div>

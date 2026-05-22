@@ -14,7 +14,7 @@ import {
 
 export function ContactSection() {
   return (
-    <section id="contact" className="bg-bg-secondary py-24 sm:py-32">
+    <section id="contact" className="bg-bg-secondary py-16 sm:py-32">
       <Container>
         <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
           {/* Left: copy + direct contact */}

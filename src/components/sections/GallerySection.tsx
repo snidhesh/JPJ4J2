@@ -22,7 +22,7 @@ export function GallerySection({
   return (
     <section
       id={id}
-      className={cn('py-24 sm:py-32', alt ? 'bg-bg-secondary' : 'bg-bg-primary')}
+      className={cn('py-16 sm:py-32', alt ? 'bg-bg-secondary' : 'bg-bg-primary')}
     >
       <Container>
         <div className="mb-12 grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-end lg:gap-16">

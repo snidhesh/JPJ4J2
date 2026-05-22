@@ -29,7 +29,7 @@ export function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 pb-20 sm:px-8 lg:px-12">
-        <p className="mb-5 flex items-center gap-3 text-xs tracking-[0.3em] uppercase text-white/80">
+        <p className="mb-6 flex items-center gap-3 text-xs tracking-[0.3em] uppercase text-white/80">
           <span className="h-px w-10 bg-white/50" />
           {SITE_NAME} · {CITY}
         </p>

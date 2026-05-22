@@ -87,7 +87,7 @@ export function SpecificationSection() {
   const [openIndex, setOpenIndex] = useState<string | null>(SPEC_GROUPS[0].index);
 
   return (
-    <section id="specification" className="bg-bg-dark py-24 sm:py-32">
+    <section id="specification" className="bg-bg-dark py-16 sm:py-32">
       <Container>
         <Reveal className="mb-12 max-w-2xl">
           <p className="mb-5 flex items-center gap-3 text-xs font-medium tracking-[0.28em] uppercase text-accent-soft">

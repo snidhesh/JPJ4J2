@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight, ImageOff } from 'lucide-react';
@@ -17,6 +17,8 @@ export function RoomGallery({
   className?: string;
 }) {
   const [active, setActive] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   const close = useCallback(() => setActive(null), []);
   const prev = useCallback(
@@ -45,6 +47,49 @@ export function RoomGallery({
     };
   }, [active, close, prev, next]);
 
+  // Track the active slide (mobile slider) by comparing the track centre to each
+  // slide's centre — robust to the gap + snap-center offset. rAF-throttled.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const center = track.scrollLeft + track.clientWidth / 2;
+        let best = 0;
+        let bestDist = Infinity;
+        Array.from(track.children).forEach((c, i) => {
+          const el = c as HTMLElement;
+          const childCenter = el.offsetLeft + el.clientWidth / 2;
+          const dist = Math.abs(childCenter - center);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = i;
+          }
+        });
+        setActiveIndex(best);
+      });
+    };
+    track.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      track.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [images.length]);
+
+  // Scroll a dot's target slide to the centre (matches snap-center).
+  const goToSlide = (i: number) => {
+    const track = trackRef.current;
+    const child = track?.children[i] as HTMLElement | undefined;
+    if (!track || !child) return;
+    track.scrollTo({
+      left: child.offsetLeft - (track.clientWidth - child.clientWidth) / 2,
+      behavior: 'smooth',
+    });
+  };
+
   if (!images.length) {
     return (
       <div className={cn('grid grid-cols-1 gap-4 sm:grid-cols-2', className)}>
@@ -63,23 +108,50 @@ export function RoomGallery({
 
   return (
     <>
-      <div className={cn('grid grid-cols-1 gap-4 sm:grid-cols-2', className)}>
+      {/* Mobile: swipeable scroll-snap track. ≥sm: unchanged 2×2 grid. */}
+      <div
+        ref={trackRef}
+        className={cn(
+          'flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1',
+          'sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:pb-0',
+          '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+          className,
+        )}
+      >
         {images.map((img, i) => (
           <button
             key={img.src}
             onClick={() => setActive(i)}
-            className="group relative aspect-[3/2] cursor-pointer overflow-hidden bg-bg-secondary"
+            className="group relative aspect-[3/2] shrink-0 basis-[85%] cursor-pointer snap-center overflow-hidden bg-bg-secondary sm:shrink-0 sm:basis-auto"
           >
             <Image
               src={img.src}
               alt={img.alt}
               fill
-              sizes="(max-width: 640px) 100vw, 50vw"
+              sizes="(max-width: 640px) 85vw, 50vw"
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
           </button>
         ))}
       </div>
+
+      {/* Slider dots — mobile only */}
+      {images.length > 1 && (
+        <div className="mt-4 flex justify-center gap-2 sm:hidden">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goToSlide(i)}
+              aria-label={`View photo ${i + 1}`}
+              aria-current={activeIndex === i ? 'true' : undefined}
+              className={cn(
+                'h-1.5 rounded-full transition-all duration-300',
+                activeIndex === i ? 'w-5 bg-accent' : 'w-1.5 bg-border',
+              )}
+            />
+          ))}
+        </div>
+      )}
 
       {active !== null &&
         typeof document !== 'undefined' &&

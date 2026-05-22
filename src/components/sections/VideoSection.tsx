@@ -11,7 +11,7 @@ export function VideoSection() {
   const thumb = `https://img.youtube.com/vi/${VIDEO_YOUTUBE_ID}/maxresdefault.jpg`;
 
   return (
-    <section id="video" className="bg-bg-dark py-24 sm:py-32">
+    <section id="video" className="bg-bg-dark py-16 sm:py-32">
       <Container>
         <Reveal className="mb-12 text-center">
           <p className="mb-5 flex items-center justify-center gap-3 text-xs font-medium tracking-[0.28em] uppercase text-accent-soft">

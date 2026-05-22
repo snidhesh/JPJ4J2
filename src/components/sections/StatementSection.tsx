@@ -4,7 +4,7 @@ import { STATEMENT_QUOTE, SITE_NAME } from '@/lib/constants';
 
 export function StatementSection() {
   return (
-    <section className="bg-bg-dark py-28 sm:py-36">
+    <section className="bg-bg-dark py-20 sm:py-36">
       <Container size="narrow" className="text-center">
         <Reveal>
           <p className="mb-8 flex items-center justify-center gap-3 text-xs font-medium tracking-[0.28em] uppercase text-accent-soft">

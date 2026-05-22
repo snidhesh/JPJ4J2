@@ -15,7 +15,7 @@ export function FloorPlanSection() {
   const [active, setActive] = useState(0);
 
   return (
-    <section id="floorplans" className="bg-bg-secondary py-24 sm:py-32">
+    <section id="floorplans" className="bg-bg-secondary py-16 sm:py-32">
       <Container>
         <Reveal className="mb-10">
           <p className="mb-5 flex items-center gap-3 text-xs font-medium tracking-[0.28em] uppercase text-accent">
