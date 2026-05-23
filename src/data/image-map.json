@@ -21,7 +21,7 @@
   "dining": {
     "name": "Dining",
     "alt": "Dedicated dining area at Villa Sfiora",
-    "sources": ["Dining-1", "Dining-2", "Dining-3", "Dining-4"]
+    "sources": ["Dining-1", "Dining-2", "Dining-3", "Dining"]
   },
   "bedrooms": {
     "name": "Bedrooms & Study",

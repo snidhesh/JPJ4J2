@@ -92,7 +92,7 @@ export const SECTION_COPY: Record<
   living: {
     label: 'Living & Reception',
     title: 'Living spaces that work for real life.',
-    body: 'Formal and informal living areas flow from the entrance into the heart of the home, with a large dedicated dining area and a ground-floor ensuite guest bedroom. There is volume, openness, and a natural connection to the outdoors — the room feels intentional, not staged.',
+    body: 'Formal and informal living areas flow from the entrance into the heart of the home, with a large dedicated dining area and a ground-floor ensuite guest bedroom. There is volume, openness, and a natural connection to the outdoors — the space feels intentional, not staged.',
   },
   kitchen: {
     label: 'The Kitchen',

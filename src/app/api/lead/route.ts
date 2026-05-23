@@ -27,21 +27,32 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
+  // Full intake URL, e.g. https://<crm-domain>/api/v1/public/intake/leads
   const endpoint = process.env.CRM_LEAD_ENDPOINT;
 
-  // Build a CRM-agnostic payload. Adjust field names here once the CRM contract is known.
-  const payload = {
-    project: PROJECT_NAME,
-    location: LOCATION_NAME,
-    fullName: lead.fullName,
-    email: lead.email,
+  // The CRM only stores name/phone/email/note — fold our extra provenance
+  // (project, source, UTM, consent) into `note` so nothing is lost.
+  const utm = sanitizeUtm(lead.utm);
+  const note = [
+    lead.message?.trim() || null,
+    `Project: ${PROJECT_NAME}, ${LOCATION_NAME}`,
+    `Source: ${lead.source}`,
+    Object.keys(utm).length
+      ? `UTM: ${Object.entries(utm).map(([k, v]) => `${k}=${v}`).join(', ')}`
+      : null,
+    `Consent: ${lead.consent ? 'granted' : 'no'}`,
+  ]
+    .filter(Boolean)
+    .join('\n')
+    .slice(0, 2000);
+
+  // Matches the CRM intake contract: name, phone (E.164), email, note.
+  const payload: Record<string, unknown> = {
+    name: lead.fullName,
     phone: `${lead.countryCode}${lead.phone}`.replace(/\s+/g, ''),
-    message: lead.message ?? '',
-    consent: lead.consent,
-    source: lead.source,
-    utm: sanitizeUtm(lead.utm),
-    submittedAt: new Date().toISOString(),
+    note,
   };
+  if (lead.email) payload.email = lead.email.slice(0, 200);
 
   // No endpoint configured yet — accept so the form is testable pre-integration.
   // NB: never log the payload — it contains PII (name/email/phone).

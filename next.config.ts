@@ -38,9 +38,12 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // Deployed on Vercel — keep Next.js Image Optimization on for the local /public assets.
+  // Photos are pre-optimised at build time (process-images.mjs → ~50–300KB webp,
+  // sized 1200–2000px). Serving them directly (unoptimized) skips the Next.js
+  // image-optimizer cache, which otherwise serves a STALE copy after a photo is
+  // replaced (cache is keyed by URL, not file contents). No quality is lost.
   images: {
-    formats: ['image/avif', 'image/webp'],
+    unoptimized: true,
   },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
