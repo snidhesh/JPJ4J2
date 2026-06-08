@@ -8,7 +8,7 @@ import { GallerySection } from '@/components/sections/GallerySection';
 import { StatementSection } from '@/components/sections/StatementSection';
 import { OutdoorSection } from '@/components/sections/OutdoorSection';
 import { SpecificationSection } from '@/components/sections/SpecificationSection';
-import { FloorPlanSection } from '@/components/sections/FloorPlanSection';
+// import { FloorPlanSection } from '@/components/sections/FloorPlanSection'; // TODO: hidden at client request — restore when approved
 import { LocationSection } from '@/components/sections/LocationSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
@@ -42,7 +42,7 @@ export default function Home() {
 
         <OutdoorSection />
         <SpecificationSection />
-        <FloorPlanSection />
+        {/* <FloorPlanSection /> */} {/* TODO: hidden at client request — restore when approved */}
         <LocationSection />
         <ContactSection />
       </main>

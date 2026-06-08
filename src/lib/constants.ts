@@ -46,7 +46,8 @@ export const NAV_LINKS: NavLink[] = [
   { label: 'Bedrooms', href: '#bedrooms' },
   { label: 'Outdoor', href: '#outdoor' },
   { label: 'Specification', href: '#specification' },
-  { label: 'Floor Plans', href: '#floorplans' },
+  // { label: 'Floor Plans', href: '#floorplans' }, // TODO: hidden at client request — restore with FloorPlanSection
+  { label: 'Location', href: '#location' },
   { label: 'Enquire', href: '#contact' },
 ];
 
