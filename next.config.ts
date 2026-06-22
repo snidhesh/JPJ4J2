@@ -15,7 +15,7 @@ const csp = [
   // cdnjs hosts the Twemoji country flags used by react-international-phone.
   "img-src 'self' data: blob: https://img.youtube.com https://i.ytimg.com https://cdnjs.cloudflare.com",
   "font-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://vitals.vercel-insights.com",
   "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://maps.google.com https://www.google.com",
   "frame-ancestors 'self'",
   "base-uri 'self'",

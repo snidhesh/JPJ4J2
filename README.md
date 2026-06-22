@@ -96,20 +96,16 @@ names there once the CRM contract is known.
 
 ## Design
 
-Modeled on the **Sotheby's International Realty** aesthetic: clean white / off-white (`#fafafa`)
-backgrounds, the iconic **Sotheby's navy `#002349`** for accents, buttons, and dark sections,
+Modeled on the aesthetic: clean white / off-white (`#fafafa`)
+backgrounds, the iconic navy for accents, buttons, and dark sections,
 charcoal text, generous whitespace, and serif headlines over letter-spaced sans nav.
 
 All colors are design tokens in `src/app/globals.css` (`@theme` block) — retune the whole site
 from there.
 
 **Fonts** (loaded via `next/font` in `src/app/layout.tsx`):
-- **Fraunces** (serif headlines) — a free, near-identical stand-in for Sotheby's *FreightBig Pro*.
-- **Libre Franklin** (body / nav / UI) — a free stand-in for Sotheby's *BentonSans*.
-
-> Sotheby's actual fonts (BentonSans, FreightBig Pro) are licensed/commercial. To go
-> pixel-exact, license them, drop the `.woff2` files in `public/fonts/`, add `@font-face`
-> rules, and point `--font-serif` / `--font-sans` in `globals.css` at them.
+- **Fraunces** (serif headlines) 
+- **Libre Franklin** (body / nav / UI) 
 
 ## Structure
 
